@@ -1,0 +1,72 @@
+@code_type c .h
+@comment_type /* %s */
+@compiler lit -t layout.lit
+
+@s Keyboard layout, for the Kinesis Advantage refurbish
+
+--- layout.h
+#ifndef __LAYOUT_H__
+#define __LAYOUT_H__
+
+#include "keys.h"
+#include "pins.h"
+
+const int rows[][2] = { PA1, PA2, PA3, PA4, PA5, PA6, PA7, PB0, PB1, PB10, PB11 };
+const int cols[][2] = { PB12, PB13, PB14, PB15, PA8, PA9, PA10, PB6, PB7 };
+
+#define KINESIS(KEsc, KF1, KF2, KF3, KF4, KF5, KF6, KF7, KF8, \
+    KPlus,   K1,   K2,    K3, K4, K5, \
+    KCaps,   KA,   KS,    KD, KF, KG, \
+    KLShift, KZ,   KX,    KC, KV, KB, \
+    KGrave,  KIns, KLeft, KRight, \
+    \
+           KLCtrl, KLAlt, \
+    BBSpc, KDel,   KHome, \
+                   KEnd, \
+    \
+    KF9, KF10, KF11, KF12, KPrS, KScL, KBrk, KKeypad, KProg, \
+    K6,  K7,    K8,        K9,        K0,      KMinus, \
+    KY,  KU,    KI,        KO,        KP,      KBSlash, \
+    KH,  KJ,    KK,        KL,        KSColon, KBQuote, \
+    KN,  KM,    KComma,    KPeriod,   KSlash,  KRShift, \
+    KUp, KDown, KOBracket, KCBracket, \
+    \
+    KRAlt, KRCtrl, \
+    KPgUp, KEnter, KSpace, \
+    KPgDn) \
+{ { KPlus,   K1,     K2,     K3,        K4,        K5,      KF3,    KF6,     KEsc  }, \
+  { KTab,    KQ,     KW,     KE,        KR,        KT,      KPrS,   KF7,     KNone }, \
+  { KCaps,   KA,     KS,     KD,        KF,        KG,      KScL,   KF8,     KNone }, \
+  { KLShift, KZ,     KX,     KC,        KV,        KB,      KF4,    KF10,    KNone }, \
+  { KLCtrl,  KGrave, KIns,   KLeft,     KBspc,     KRight,  KDel,   KNone,   KNone }, \
+  { K6,      K7,     K8,     K9,        K0,        KMinus,  KF5,    KF11,    KNone }, \
+  { KY,      KU,     KI,     KO,        KP,        KBSlash, KNone,  KKeypad, KF1   }, \
+  { KH,      KJ,     KK,     KL,        KSColon,   KQuote,  KNone,  KProg,   KNone }, \
+  { KN,      KM,     KComma, KPeriod,   KSlash,    KRShift, KNone,  KNone,   KNone }, \
+  { KUp,     KSpace, KDown,  KOBracket, KCBracket, KRCtrl,  KEnter, KNone,   KNone }, \
+  { KLAlt,   KPgDn,  KEnd,   KRAlt,     KHome,     KPgUp,   KF12,   KF9,     KBrk  } }
+
+const int layout[11][9] =
+KINESIS(KEsc, KF1, KF2, KF3, KF4, KF5, KF6, KF7, KF8, \
+    KPlus,   K1,   K2,    K3, K4, K5, \
+    KCaps,   KA,   KS,    KD, KF, KG, \
+    KLShift, KZ,   KX,    KC, KV, KB, \
+    KGrave,  KIns, KLeft, KRight, \
+    \
+           KLCtrl, KLAlt, \
+    BBSpc, KDel,   KHome, \
+                   KEnd, \
+    \
+    KF9, KF10, KF11, KF12, KPrS, KScL, KBrk, /*Keypad*/KNone, /*Prog*/KNone, \
+    K6,  K7,    K8,        K9,        K0,      KMinus, \
+    KY,  KU,    KI,        KO,        KP,      KBSlash, \
+    KH,  KJ,    KK,        KL,        KSColon, KBQuote, \
+    KN,  KM,    KComma,    KPeriod,   KSlash,  KRShift, \
+    KUp, KDown, KOBracket, KCBracket, \
+    \
+    KRAlt, KRCtrl, \
+    KPgUp, KEnter, KSpace, \
+    KPgDn);
+
+#endif // __LAYOUT_H__
+---

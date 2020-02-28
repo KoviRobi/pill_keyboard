@@ -1,0 +1,290 @@
+@code_type c .h
+@comment_type /* %s */
+@compiler lit -t keycodes.lit
+
+@s Key-codes for the USB HID
+
+See the [USB Hid Usage Table
+v1.12](https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf) file,
+pages 53--59
+
+--- keycodes.h
+#ifndef __KEYS_H__
+#define __KEYS_H__
+
+//                                                          Typical
+//                  Usage   Usage Name                      AT-101  PC-AT   Mac Unix    Boot
+//                  ID                                      Position
+//------------------------------------------------------------------------------------------------
+#define KNone       0x00//  Rsvd (no event indicated) [9]   N/A     √       √   √       4/101/104
+#define KErrRollOvr 0x01//  KBD ErrorRollOver [9]           N/A     √       √   √       4/101/104
+#define KPOSTFail   0x02//  KBD POSTFail [9]                N/A     √       √   √       4/101/104
+#define KErrUndef   0x03//  KBD ErrorUndefined [9]          N/A     √       √   √       4/101/104
+#define KA          0x04//  KBD a and A [4]                 31      √       √   √       4/101/104
+#define KB          0x05//  KBD b and B                     50      √       √   √       4/101/104
+#define KC          0x06//  KBD c and C [4]                 48      √       √   √       4/101/104
+#define KD          0x07//  KBD d and D                     33      √       √   √       4/101/104
+#define KE          0x08//  KBD e and E                     19      √       √   √       4/101/104
+#define KF          0x09//  KBD f and F                     34      √       √   √       4/101/104
+#define KG          0x0A//  KBD g and G                     35      √       √   √       4/101/104
+#define KH          0x0B//  KBD h and H                     36      √       √   √       4/101/104
+#define KI          0x0C//  KBD i and I                     24      √       √   √       4/101/104
+#define KJ          0x0D//  KBD j and J                     37      √       √   √       4/101/104
+#define KK          0x0E//  KBD k and K                     38      √       √   √       4/101/104
+#define KL          0x0F//  KBD l and L                     39      √       √   √       4/101/104
+#define KM          0x10//  KBD m and M [4]                 52      √       √   √       4/101/104
+#define KN          0x11//  KBD n and N                     51      √       √   √       4/101/104
+#define KO          0x12//  KBD o and O [4]                 25      √       √   √       4/101/104
+#define KP          0x13//  KBD p and P [4]                 26      √       √   √       4/101/104
+#define KQ          0x14//  KBD q and Q [4]                 17      √       √   √       4/101/104
+// Pg. 54           ID      Usage Name                      AT-101  PC-AT   Mac Unix    Boot
+#define KR          0x15//  KBD r and R                     20      √       √   √       4/101/104
+#define KS          0x16//  KBD s and S [4]                 32      √       √   √       4/101/104
+#define KT          0x17//  KBD t and T                     21      √       √   √       4/101/104
+#define KU          0x18//  KBD u and U                     23      √       √   √       4/101/104
+#define KV          0x19//  KBD v and V                     49      √       √   √       4/101/104
+#define KW          0x1A//  KBD w and W [4]                 18      √       √   √       4/101/104
+#define KX          0x1B//  KBD x and X [4]                 47      √       √   √       4/101/104
+#define KY          0x1C//  KBD y and Y [4]                 22      √       √   √       4/101/104
+#define KZ          0x1D//  KBD z and Z [4]                 46      √       √   √       4/101/104
+#define K1          0x1E//  KBD 1 and ! [4]                 2       √       √   √       4/101/104
+#define K2          0x1F//  KBD 2 and @ [4]                 3       √       √   √       4/101/104
+#define K3          0x20//  KBD 3 and # [4]                 4       √       √   √       4/101/104
+#define K4          0x21//  KBD 4 and $ [4]                 5       √       √   √       4/101/104
+#define K5          0x22//  KBD 5 and % [4]                 6       √       √   √       4/101/104
+#define K6          0x23//  KBD 6 and ^ [4]                 7       √       √   √       4/101/104
+#define K7          0x24//  KBD 7 and & [4]                 8       √       √   √       4/101/104
+#define K8          0x25//  KBD 8 and * [4]                 9       √       √   √       4/101/104
+#define K9          0x26//  KBD 9 and ( [4]                 10      √       √   √       4/101/104
+#define K0          0x27//  KBD 0 and ) [4]                 11      √       √   √       4/101/104
+#define KEnter      0x28//  KBD Return (ENTER) [5]          43      √       √   √       4/101/104
+#define KEsc        0x29//  KBD ESCAPE                      110     √       √   √       4/101/104
+#define KBspc       0x2A//  KBD DELETE (Backspace) [13]     15      √       √   √       4/101/104
+#define KTab        0x2B//  KBD Tab                         16      √       √   √       4/101/104
+#define KSpace      0x2C//  KBD Spacebar                    61      √       √   √       4/101/104
+#define KMinus      0x2D//  KBD - and (underscore) [4]      12      √       √   √       4/101/104
+#define KPlus       0x2E//  KBD = and + [4]                 13      √       √   √       4/101/104
+#define KOBracket   0x2F//  KBD [ and { [4]                 27      √       √   √       4/101/104
+#define KCBracket   0x30//  KBD ] and } [4]                 28      √       √   √       4/101/104
+#define KBSlash     0x31//  KBD \ and |                     29      √       √   √       4/101/104
+#define KNonUSHash  0x32//  KBD Non-US # and ~ [2]          42      √       √   √       4/101/104
+#define KSColon     0x33//  KBD ; and : [4]                 40      √       √   √       4/101/104
+#define KQuote      0x34//  KBD ‘ and “ [4]                 41      √       √   √       4/101/104
+#define KGrave      0x35//  KBD Grave Accent and Tilde [4]  1       √       √   √       4/101/104
+#define KComma      0x36//  KBD, and < [4]                  53      √       √   √       4/101/104
+#define KPeriod     0x37//  KBD . and > [4]                 54      √       √   √       4/101/104
+#define KSlash      0x38//  KBD / and ? [4]                 55      √       √   √       4/101/104
+#define KCaps       0x39//  KBD Caps Lock [11]              30      √       √   √       4/101/104
+#define KF1         0x3A//  KBD F1                          112     √       √   √       4/101/104
+// Pg. 55           ID      Usage Name                      AT-101  PC-AT   Mac Unix    Boot
+#define KF2         0x3B//  KBD F2                          113     √       √   √       4/101/104
+#define KF3         0x3C//  KBD F3                          114     √       √   √       4/101/104
+#define KF4         0x3D//  KBD F4                          115     √       √   √       4/101/104
+#define KF5         0x3E//  KBD F5                          116     √       √   √       4/101/104
+#define KF6         0x3F//  KBD F6                          117     √       √   √       4/101/104
+#define KF7         0x40//  KBD F7                          118     √       √   √       4/101/104
+#define KF8         0x41//  KBD F8                          119     √       √   √       4/101/104
+#define KF9         0x42//  KBD F9                          120     √       √   √       4/101/104
+#define KF10        0x43//  KBD F10                         121     √       √   √       4/101/104
+#define KF11        0x44//  KBD F11                         122     √       √   √       101/104
+#define KF12        0x45//  KBD F12                         123     √       √   √       101/104
+#define KPrS        0x46//  KBD PrintScreen1                124     √       √   √       101/104
+#define KScL        0x47//  KBD Scroll Lock11               125     √       √   √       4/101/104
+#define KBrk        0x48//  KBD Pause1                      126     √       √   √       101/104
+#define KIns        0x49//  KBD Insert1                     75      √       √   √       101/104
+#define KHome       0x4A//  KBD Home1                       80      √       √   √       101/104
+#define KPgUp       0x4B//  KBD PageUp1                     85      √       √   √       101/104
+#define KDel        0x4C//  KBD Delete Forward [1;14]       76      √       √   √       101/104
+#define KEnd        0x4D//  KBD End1                        81      √       √   √       101/104
+#define KPgDn       0x4E//  KBD PageDown [1]                86      √       √   √       101/104
+#define KRight      0x4F//  KBD RightArrow [1]              89      √       √   √       101/104
+#define KLeft       0x50//  KBD LeftArrow [1]               79      √       √   √       101/104
+#define KDown       0x51//  KBD DownArrow [1]               84      √       √   √       101/104
+#define KUp         0x52//  KBD UpArrow [1]                 83      √       √   √       101/104
+#define KNumLock    0x53//  KP Num Lock and Clear [11]      90      √       √   √       101/104
+#define KPSlash     0x54//  KP /1                           95      √       √   √       101/104
+#define KPStar      0x55//  KP *                            100     √       √   √       4/101/104
+#define KPMinus     0x56//  KP -                            105     √       √   √       4/101/104
+#define KPPlus      0x57//  KP +                            106     √       √   √       4/101/104
+#define KPEnter     0x58//  KP ENTER5                       108     √       √   √       101/104
+#define KP1         0x59//  KP 1 and End                    93      √       √   √       4/101/104
+#define KP2         0x5A//  KP 2 and Down Arrow             98      √       √   √       4/101/104
+#define KP3         0x5B//  KP 3 and PageDn                 103     √       √   √       4/101/104
+#define KP4         0x5C//  KP 4 and Left Arrow             92      √       √   √       4/101/104
+#define KP5         0x5D//  KP 5                            97      √       √   √       4/101/104
+#define KP6         0x5E//  KP 6 and Right Arrow            102     √       √   √       4/101/104
+#define KP7         0x5F//  KP 7 and Home                   91      √       √   √       4/101/104
+#define KP8         0x60//  KP 8 and Up Arrow               96      √       √   √       4/101/104
+// Pg. 56           ID      Usage Name              AT-101  PC-AT   Mac Unix    Boot
+#define KP9         0x61//  KP 9 and PageUp         101     √       √   √       4/101/104
+#define KP0         0x62//  KP 0 and Insert         99      √       √   √       4/101/104
+#define KPPeriod    0x63//  KP . and Delete         104     √       √   √       4/101/104
+#define KNonUSBSlsh 0x64//  KBD Non-US \ and |3;6]  45      √       √   √       4/101/104
+#define KApp        0x65//  KBD Application [10]    129     √           √       104
+#define KPower      0x66//  KBD Power [9]                           √   √
+#define KPEquals    0x67//  KP =                                        √
+#define KF13        0x68//  KBD F13                                     √
+#define KF14        0x69//  KBD F14                                     √
+#define KF15        0x6A//  KBD F15                                     √
+#define KF16        0x6B//  KBD F16
+#define KF17        0x6C//  KBD F17
+#define KF18        0x6D//  KBD F18
+#define KF19        0x6E//  KBD F19
+#define KF20        0x6F//  KBD F20
+#define KF21        0x70//  KBD F21
+#define KF22        0x71//  KBD F22
+#define KF23        0x72//  KBD F23
+#define KF24        0x73//  KBD F24
+#define KExecute    0x74//  KBD Execute                                 √
+#define KHelp       0x75//  KBD Help                                    √
+#define KMenu       0x76//  KBD Menu                                    √
+#define KSelect     0x77//  KBD Select                                  √
+#define KStop       0x78//  KBD Stop                                    √
+#define KAgain      0x79//  KBD Again                                   √
+#define KUndo       0x7A//  KBD Undo                                    √
+#define KCut        0x7B//  KBD Cut                                     √
+#define KCopy       0x7C//  KBD Copy                                    √
+#define KPaste      0x7D//  KBD Paste                                   √
+#define KFind       0x7E//  KBD Find                                    √
+#define KMute       0x7F//  KBD Mute                                    √
+#define KVolUp      0x80//  KBD Volume Up                               √
+#define KVolDn      0x81//  KBD Volume Down                             √
+#define KLckCaps    0x82//  KBD Locking Caps Lock [12]                  √
+#define KLckNum     0x83//  KBD Locking Num Lock [12]                   √
+#define KLckScroll  0x84//  KBD Locking Scroll Lock [12]                √
+#define KPComma     0x85//  KP Comma [27]                   107
+#define KPEqualSign 0x86//  KP Equal Sign29
+// Pg. 57           ID      Usage Name          AT-101  PC-AT   Mac Unix    Boot
+#define KInterntnl1 0x87//  KBD International1 [15,28]  56
+#define KInterntnl2 0x88//  KBD International2 [16]
+#define KInterntnl3 0x89//  KBD International3 [17]
+#define KInterntnl4 0x8A//  KBD International4 [18]
+#define KInterntnl5 0x8B//  KBD International5 [19]
+#define KInterntnl6 0x8C//  KBD International6 [20]
+#define KInterntnl7 0x8D//  KBD International7 [21]
+#define KInterntnl8 0x8E//  KBD International8 [22]
+#define KInterntnl9 0x8F//  KBD International9 [22]
+#define KLANG1      0x90//  KBD LANG1 [25]
+#define KLANG2      0x91//  KBD LANG2 [26]
+#define KLANG3      0x92//  KBD LANG3 [30]
+#define KLANG4      0x93//  KBD LANG4 [31]
+#define KLANG5      0x94//  KBD LANG5 [32]
+#define KLANG6      0x95//  KBD LANG6 [8]
+#define KLANG7      0x96//  KBD LANG7 [8]
+#define KLANG8      0x97//  KBD LANG8 [8]
+#define KLANG9      0x98//  KBD LANG9 [8]
+#define KAltErase   0x99//  KBD Alternate Erase [7]
+#define KSysReq     0x9A//  KBD SysReq/Attention [1]
+#define KCancel     0x9B//  KBD Cancel
+#define KClear      0x9C//  KBD Clear
+#define KPrior      0x9D//  KBD Prior
+#define KReturn     0x9E//  KBD Return
+#define KSeparator  0x9F//  KBD Separator
+#define KOut        0xA0//  KBD Out
+#define KOper       0xA1//  KBD Oper
+#define KClearAgain 0xA2//  KBD Clear/Again
+#define KCrSelProps 0xA3//  KBD CrSel/Props
+#define KExSel      0xA4//  KBD ExSel
+// Reserved     0xA5-0xAF// Reserved
+#define KP00        0xB0//  KP 00
+#define KP000       0xB1//  KP 000
+#define ThouSep     0xB2//  Thousands Separator [33]
+#define DecimalSep  0xB3//  Decimal Separator [33]
+#define CurrUnit    0xB4//  Currency Unit [34]
+#define CurrSubUnit 0xB5//  Currency Sub-unit [34]
+#define KPOPar      0xB6//  KP (
+// Pg. 58           ID      Usage Name                          AT-101  PC-AT   Mac Unix    Boot
+#define KPCPar      0xB7//  KP )
+#define KPOBrace    0xB8//  KP {
+#define KPCBrace    0xB9//  KP }
+#define KPTab       0xBA//  KP Tab
+#define KPBspc      0xBB//  KP Backspace
+#define KPA         0xBC//  KP A
+#define KPB         0xBD//  KP B
+#define KPC         0xBE//  KP C
+#define KPD         0xBF//  KP D
+#define KPE         0xC0//  KP E
+#define KPF         0xC1//  KP F
+#define KPXOR       0xC2//  KP XOR
+#define KPCaret     0xC3//  KP ^
+#define KPPercent   0xC4//  KP %
+#define KPLess      0xC5//  KP <
+#define KPGreater   0xC6//  KP >
+#define KPAmpersand 0xC7//  KP &
+#define KPAnd       0xC8//  KP &&
+#define KPPipe      0xC9//  KP |
+#define KPOr        0xCA//  KP ||
+#define KPColon     0xCB//  KP :
+#define KPHash      0xCC//  KP #
+#define KPSpace     0xCD//  KP Space
+#define KPAt        0xCE//  KP @
+#define KPBang      0xCF//  KP !
+#define KPMemStore  0xD0//  KP Memory Store
+#define KPMemRecall 0xD1//  KP Memory Recall
+#define KPMemClear  0xD2//  KP Memory Clear
+#define KPMemAdd    0xD3//  KP Memory Add
+#define KPMemSub    0xD4//  KP Memory Subtract
+#define KPMemMult   0xD5//  KP Memory Multiply
+#define KPMemDiv    0xD6//  KP Memory Divide
+#define KPPlusMinus 0xD7//  KP +/-
+#define KPClear     0xD8//  KP Clear
+#define KPClearEnt  0xD9//  KP Clear Entry
+#define KPBinary    0xDA//  KP Binary
+#define KPOctal     0xDB//  KP Octal
+#define KPDecimal   0xDC//  KP Decimal
+// Pg. 59           ID      Usage Name                      AT-101  PC-AT   Mac Unix    Boot
+#define KPHex       0xDD//  KP Hexadecimal
+// Reserved     0xDE-0xDF// Reserved
+#define KLCtrl      0xE0//  KBD LeftControl                 58      √       √   √       4/101/104
+#define KLShift     0xE1//  KBD LeftShift                   44      √       √   √       4/101/104
+#define KLAlt       0xE2//  KBD LeftAlt                     60      √       √   √       4/101/104
+#define KLGUI       0xE3//  KBD Left GUI [10;23]            127     √       √   √       104
+#define KRCtrl      0xE4//  KBD RightControl                64      √       √   √       101/104
+#define KRShift     0xE5//  KBD RightShift                  57      √       √   √       4/101/104
+#define KRAlt       0xE6//  KBD RightAlt                    62      √       √   √       101/104
+#define KRGUI       0xE7//  KBD Right GUI [10;24]           128     √       √   √       104
+// Reserved 0xE8-0xFFFF //  Reserved
+//------------------------------------------------------------------------------------------------
+//                  Usage   Usage Name                      Typical PC-AT   Mac Unix    Boot
+//                  ID                                      AT-101
+//                                                          Position
+
+// Footnotes 1-15, 20-34
+// [1]  Usage of keys is not modified by the state of the Control, Alt, Shift or Num Lock keys. That is, a key does not send extra
+//      codes to compensate for the state of any Control, Alt, Shift or Num Lock keys.
+// [2]  Typical language mappings: US: \| Belg: µ`£ FrCa: <}> Dan:’* Dutch: <> Fren:*µ Ger: #’ Ital: ù§ LatAm: }`] Nor:,*
+//      Span: }Ç Swed: ,* Swiss: $£ UK: #~.
+// [3]  Typical language mappings: Belg:<\> FrCa:«°» Dan:<\> Dutch:]|[ Fren:<> Ger:<|> Ital:<> LatAm:<> Nor:<> Span:<>
+//      Swed:<|> Swiss:<\> UK:\| Brazil: \|.
+// [4]  Typically remapped for other languages in the host system.
+// [5]  Keyboard Enter and Keypad Enter generate different Usage codes.
+// [6]  Typically near the Left-Shift key in AT-102 implementations.
+// [7]  Example, Erase-Eaze™ key.
+// [8]  Reserved for language-specific functions, such as Front End Processors and Input Method Editors.
+// [9]  Reserved for typical keyboard status or keyboard errors. Sent as a member of the keyboard array. Not a physical key.
+// [10] Windows key for Windows 95, and “Compose.”
+// [11] Implemented as a non-locking key; sent as member of an array.
+// [12] Implemented as a locking key; sent as a toggle button. Available for legacy support; however, most systems should use the
+//      non-locking version of this key.
+// [13] Backs up the cursor one position, deleting a character as it goes.
+// [14] Deletes one character without changing position.
+// [21] Toggle Double-Byte/Single-Byte mode.
+// [22] Undefined, available for other Front End Language Processors.
+// [23] Windowing environment key, examples are Microsoft Left Win key, Mac Left Apple key, Sun Left Meta key
+// [24] Windowing environment key, examples are Microsoft® RIGHT WIN key, Macintosh® RIGHT APPLE key, Sun® RIGHT
+//      META key.
+// [25] Hangul/English toggle key. This usage is used as an input method editor control key on a Korean language keyboard.
+// [26] Hanja conversion key. This usage is used as an input method editor control key on a Korean language keyboard.
+// [27] Keypad Comma is the appropriate usage for the Brazilian keypad period (.) key. This represents the closest possible
+//      match, and system software should do the correct mapping based on the current locale setting.
+// [28] Keyboard International1 should be identified via footnote as the appropriate usage for the Brazilian forward-slash (/) and
+// [29] Used on AS/400 keyboards.
+// [30] Defines the Katakana key for Japanese USB word-processing keyboards.
+// [31] Defines the Hiragana key for Japanese USB word-processing keyboards.
+// [32] Usage 0x94 (Keyboard LANG5) "Defines the Zenkaku/Hankaku key for Japanese USB word-processing keyboards.
+// [33] The symbol displayed will depend on the current locale settings of the operating system.  For example, the US thousands
+//      separator would be a comma, and the decimal separator would be a period.
+// [34] The symbol displayed will depend on the current locale settings of the operating system.  For example the US currency
+
+#endif // __KEYS_H__
+---

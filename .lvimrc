@@ -1,0 +1,2 @@
+let neomake_c_gcc_exe = 'arm-none-eabi-gcc'
+let neomake_c_gcc_args = [ '-I' . $LIBOPENCM3 . '/include', '-DSTM32F1', '-L' . $LIBOPENCM3 . '/lib', '-lopencm3_stm32f1' ]

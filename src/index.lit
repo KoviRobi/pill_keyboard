@@ -1,0 +1,9 @@
+@book
+@title Literate keyboard driver
+
+This describes a keyboard driver for the STM32F103C8T6 (blue pill) board.
+
+[Main loop](main.lit)
+[Keyboard layout](layout.lit)
+[Key-codes](keycodes.lit)
+[Pin table](pins.lit)
