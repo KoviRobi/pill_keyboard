@@ -4,6 +4,8 @@ OBJCOPY=$(PREFIX)objcopy
 
 BUILDDIR=../build
 DOCDIR=../docs
+VERSION ?= $(shell git describe --always --tags --dirty)
+FOUR_BYTE_HASH ?= $(shell echo -n 0x; git describe --always --abbrev=4)
 
 .PHONY: all doc clean
 
@@ -13,14 +15,17 @@ keyboard.elf: $(addprefix $(BUILDDIR)/,\
 	main.o \
 	)
 
-CFLAGS += -mtune=cortex-m3 -mthumb \
-					-DSTM32F1 -I$(LIBOPENCM3)/include
-LDFLAGS += -L$(LIBOPENCM3)/lib -lopencm3_stm32f1 \
-					--specs=nosys.specs \
-					-nostartfiles \
-					-Wl,-T,bluepill.ld \
-					-Wl,-gc-sections \
-					-mtune=cortex-m3 -mthumb
+ARCHFLAGS += -mcpu=cortex-m3 -mthumb -mno-thumb-interwork -mfpu=vfp -msoft-float -mfix-cortex-m3-ldrd
+CFLAGS += $(ARCHFLAGS) \
+          -DSTM32F1 -I$(LIBOPENCM3)/include \
+          -DVERSION=$(VERSION) -DFOUR_BYTE_HASH=$(FOUR_BYTE_HASH)
+LDFLAGS += $(ARCHFLAGS) \
+           -L$(LIBOPENCM3)/lib -lopencm3_stm32f1 \
+           --specs=nosys.specs \
+           -nostartfiles \
+           -Wl,-T,bluepill.ld \
+           -Wl,-gc-sections \
+           -mtune=cortex-m3 -mthumb
 
 
 $(BUILDDIR)/%.c $(BUILDDIR)/%.h: %.lit
@@ -43,3 +48,6 @@ doc: index.lit
 	mv $(DOCDIR)/_book/* $(DOCDIR)
 	rmdir $(DOCDIR)/_book
 	mv $(DOCDIR)/*_contents.html $(DOCDIR)/index.html
+
+clean:
+	-rm -r $(BUILDDIR)

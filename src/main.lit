@@ -1,42 +1,50 @@
 @code_type c .c
 @comment_type /* %s */
-@compiler lit -t main.lit && gcc main.c -c -o main.o
-@title Keyboard driver for STM32F103C8T6 ($2 bluepill board)
+@compiler make
+@error_format .*/%f:%l %m
+@title Keyboard driver for STM32F103C8T6
+
 
 @s Overview
 
 This currently just blinks the LEDs. More interesting stuff to come!
 
+The idea is that the system clock (SysTick) is used to poll the keyboard
+matrix, and the USB low-priority interrupt (which is triggered by any [USB
+packet](https://community.st.com/s/question/0D50X00009Xke6SSAR/stm32f1-usb-interrupts-why-lp-and-hp)
+just handles any new keypresses -- this way we respond to the USB packets fast,
+can periodically poll the matrix and also be low power.
 --- main.c
 @{Includes}
 
-static vector_table_t* bootloader_vector_table = (vector_table_t*)0x08000000;
+#define arrlen(x) (sizeof(x)/sizeof(x[0]))
 
-void sys_tick_handler(void)
-{
-    @{Read keyboard matrix}
-}
-
-void usb_lp_can_rx0_isr(void) {
-    // See https://community.st.com/s/question/0D50X00009Xke6SSAR/stm32f1-usb-interrupts-why-lp-and-hp
-    @{USB Interrupt Handler}
-}
+@{SysTick Interrupt Handler}
+@{USB Interrupt Handler}
 
 int main(void) {
+    @{Initialise SysTick}
     @{Initialise GPIOs}
-    @{Initialise USB}
+    // @{Initialise USB}
 
     while (1) {
-      @{Blink LEDs}
+        @{Main loop}
     }
 }
 ---
 
 @s Initialisation
 
+#### GPIO Initialisation
+
 We need to initialise the GPIOs, for which we need to turn on the clocks on the
-corresponding peripherals.  The reason we need to do this is because this
-allows the device to avoid drawing current for peripherals which are unused.
+corresponding peripherals. The reason we need to do this is because this allows
+the device to avoid drawing current for peripherals which are unused.
+
+--- Includes
+#include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/gpio.h>
+---
 
 --- Initialise GPIOs
 rcc_clock_setup_in_hse_8mhz_out_72mhz();
@@ -55,43 +63,79 @@ rcc_periph_clock_disable(RCC_AFIO);
 
 And turn on the LEDs
 --- Initialise GPIOs +=
-gpio_set_mode(GPIOA,
-  GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_OPENDRAIN,
-  GPIO0);
-gpio_set(GPIOA, GPIO0);
+gpio_set_mode(GPIOB,
+        GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_OPENDRAIN,
+        GPIO0);
+gpio_set(GPIOB, GPIO0);
 gpio_set_mode(GPIOC,
-  GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_OPENDRAIN,
-  GPIO13 | GPIO14 | GPIO15);
+        GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_OPENDRAIN,
+        GPIO13 | GPIO14 | GPIO15);
 gpio_set(GPIOC, GPIO13 | GPIO14 | GPIO15);
 ---
 
 --- Initialise USB
 ---
 
-@s Blinking LEDs
---- Blink LEDs
-static int counter = 0;
-if (counter&1) gpio_clear(GPIOC, GPIO13); else gpio_set(GPIOC, GPIO13);
-if (counter&2) gpio_clear(GPIOC, GPIO14); else gpio_set(GPIOC, GPIO14);
-if (counter&4) gpio_clear(GPIOC, GPIO15); else gpio_set(GPIOC, GPIO15);
-if (counter&8) gpio_clear(GPIOA, GPIO0);  else gpio_set(GPIOA, GPIO0);
-for (int i = 0; i <  500000; ++i) __asm__("nop");
-counter++;
-// Reset, to bootloader
-if (counter>15) bootloader_vector_table->reset();
+@s Main loop
+---Includes +=
+#include <libopencmsis/core_cm3.h>
 ---
 
---- Includes
-#include <libopencm3/cm3/vector.h>
+--- Main loop
+__WFI();
+---
+
+@s SysTick Handler
+--- Includes +=
 #include <libopencm3/cm3/systick.h>
-#include <libopencm3/stm32/rcc.h>
-#include <libopencm3/stm32/gpio.h>
-#include <libopencm3/usb/usbd.h>
-#include <libopencm3/usb/cdc.h>
+#include <libopencm3/cm3/scb.h>
+---
+We set the timer frequency to $72 MHz / 8 = 9 MHz$, and the interrupt to be
+every milliseconds. Note, we set the reload to $N-1$ to have it interrupt every
+$N$ values.
+--- Initialise SysTick
+systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
+systick_clear();
+systick_set_reload((1e-1 * 9e6) -1);
+systick_interrupt_enable();
+systick_counter_enable();
+// For reset button
+gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO8);
+gpio_set(GPIOA, GPIO8);
+gpio_set_mode(GPIOB, GPIO_MODE_INPUT, GPIO_CNF_INPUT_PULL_UPDOWN, GPIO6);
+gpio_clear(GPIOB, GPIO6);
+---
+
+--- SysTick Interrupt Handler
+void sys_tick_handler(void)
+{
+    static int counter = 0;
+
+    if (counter&1) gpio_clear(GPIOC, GPIO13); else gpio_set(GPIOC, GPIO13);
+    if (counter&2) gpio_clear(GPIOC, GPIO14); else gpio_set(GPIOC, GPIO14);
+    if (counter&4) gpio_clear(GPIOC, GPIO15); else gpio_set(GPIOC, GPIO15);
+    if (counter&8) gpio_clear(GPIOB, GPIO0);  else gpio_set(GPIOB, GPIO0);
+    counter++;
+
+    // Reset, to bootloader
+    if (gpio_get(GPIOB, GPIO6)) {
+        systick_counter_disable();
+        scb_reset_system();
+    }
+
+    @{Read keyboard matrix}
+    @{Queue any key presses/releases}
+}
 ---
 
 --- Read keyboard matrix
 ---
 
+--- Queue any key presses/releases
+---
+
+@s USB Interrupt Handler
 --- USB Interrupt Handler
+void usb_lp_can_rx0_isr(void) {
+}
 ---

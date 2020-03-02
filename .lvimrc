@@ -1,2 +1,12 @@
+set shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+
 let neomake_c_gcc_exe = 'arm-none-eabi-gcc'
-let neomake_c_gcc_args = [ '-I' . $LIBOPENCM3 . '/include', '-DSTM32F1', '-L' . $LIBOPENCM3 . '/lib', '-lopencm3_stm32f1' ]
+let neomake_c_gcc_args = [ '-I' . $LIBOPENCM3 . '/include',
+\                          '-DSTM32F1',
+\                          '-DFOUR_BYTE_HASH=0xC0D3',
+\                          '-DVERSION=no-version',
+\                          '-L' . $LIBOPENCM3 . '/lib', '-lopencm3_stm32f1' ]
+
+" Header (.h, not .hpp) files seem to be classed as C++ not C
+let neomake_cpp_gcc_exe  = neomake_c_gcc_exe
+let neomake_cpp_gcc_args = neomake_c_gcc_args
